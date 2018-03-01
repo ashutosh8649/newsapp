@@ -36,25 +36,34 @@ let printdata=function(data){
         htmlText += '</a>';
        
         //htmlText += '<a href="trial.html">';
-        htmlText += '<input type="button" value="Add to Favourites list" />';
+        //htmlText += '<input type="button" value="Add to Favourites list" />';
         //htmlText += '</a>';
-        htmlText += '<button id="addfav" onClick=incount() >Add to favourites</button>';
-        //htmlText += '<script type="text/javascript" src="function1.js"></script>';
+        //alert("hello");
+        htmlText += '<input type="submit" onClick="callServlet(this)" title=\"'+data.articles[i].title+'\">Add to favourites</input>';        //htmlText += '<script type="text/javascript" src="function1.js"></script>';
         htmlText += '<hr>';
     }
 document.getElementById('result').insertAdjacentHTML('afterend',htmlText);
 }
-function onClick(){
-	callServletByAjax();
-}
 
-function callServletByAjax(){
-	var http=new XMLHttpRequest();
-	http.onreadystatechange=function(){
-		if (http.readyState==4 && http.status==200){
-			document.getElementById("myDiv").innerHTML = xmlhttp.responseText;
+
+function callServlet(input){
+	alert("hello");
+	var title=input.getAttribute('title')
+var xmlhttp = new XMLHttpRequest();
+
+var params = "title="+title;
+xmlhttp.open('GET',"http://localhost:8082/newsapp/MyFavourites?"+params, true);
+xmlhttp.send();
+
+	xmlhttp.onreadystatechange = function(){
+		if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+			document.getElementById("fav_result").innerHTML = xmlhttp.responseText;
+			document.getElementById('fav_result').insertAdjacentHTML('afterend',responseText);
+
 		}
 	}
+	
+	
 }
 
 
