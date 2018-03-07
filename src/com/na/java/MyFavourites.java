@@ -36,7 +36,7 @@ public class MyFavourites extends HttpServlet {
 		PrintWriter out=response.getWriter();
 		out.println(movie);*/
 		
-		System.out.println("inside doGet of MyFav");
+		
 		JSONObject info = new JSONObject();
 		JSONArray  titles = new JSONArray();
 		JSONObject obj_ar_obj= new JSONObject();
@@ -45,10 +45,12 @@ public class MyFavourites extends HttpServlet {
 		
 		
 		try {
+			
 			obj_ar_obj=(JSONObject)parser.parse(new FileReader("/home/sapient/Documents/stsworkspace/newsapp/src/com/na/java/favourite.json"));
+			if(!obj_ar_obj.toString().equals("{}"))
 			titles=(JSONArray)obj_ar_obj.get("titles");
 			
-			/*for(Object jobj:titles) {
+		/*	for(Object jobj:titles) {
 				
 				JSONObject tit=(JSONObject)jobj;
 			    String str = (String)tit.get("title");
@@ -56,8 +58,10 @@ public class MyFavourites extends HttpServlet {
 			}*/
 			String title=request.getParameter("title");
 			info.put("title",title);//
+			
 			if(titles.size()<10)
 			{
+				System.out.println("inside if");
 				boolean flag=false;
 	            Iterator<JSONObject> iterator=titles.iterator();
 	            while(iterator.hasNext())
@@ -82,8 +86,8 @@ public class MyFavourites extends HttpServlet {
 			}
 			else{
 				//JOptionPane.showMessageDialog(null, "More than 10 entries:oldest entry will be deleted");
+				System.out.println("10 items added: Removing the oldest favourite");
 				titles.remove(0);
-				System.out.println("below remove");
 				titles.add(info);
 				obj_ar_obj.put("titles", titles);
 				//JOptionPane.showMessageDialog(null, "Now add favourites");
